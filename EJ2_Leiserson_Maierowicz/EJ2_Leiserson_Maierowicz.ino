@@ -1,13 +1,13 @@
 // Ejercicio evaluatorio 3er bimestre
 /*
   Integrantes
-    Nombre:
-    Apellido:
-    Curso:
+    Nombre: Felipe
+    Apellido: Maierowicz
+    Curso: 3C
     
-    Nombre:
-    Apellido:
-    Curso:
+    Nombre: Jonás
+    Apellido: Leiserson
+    Curso: 3C
   
 Congisgnas
   Conexionado:
@@ -15,14 +15,14 @@ Congisgnas
     Se debe conectar tambien, un pulsador que permita recibir información de un usuario.
     Indicar a continuación los pines a los cuales se conectó cada elemento y el valor de resistencias utilizado:
       Pines:
-        Boton:
-        LED1:
-        LED2:
-        LED3:
-        LED4:
+        Boton: 10
+        LED1: 2
+        LED2: 4
+        LED3: 6
+        LED4: 8
       Valor:
-        R_boton:
-        R_LEDs:
+        R_boton: 47k Ohms 5%
+        R_LEDs: 10 Ohms 5%
 
   Progamas:
     Se deben entregar un programa distinto por cada punto. Los programas son una modificación entre ellos.
@@ -45,12 +45,51 @@ Congisgnas
 
 */ 
 
+#define azul 2
+#define amarillo 4
+#define verde 6
+#define rojo 8
+#define boton 10
+//nombrando cada pin a su respectivo led o boton
+bool valorBoton = 0; // preparado para leer el valor del input
+int cuentaApretado = 0; //contador de veces que se apreta el boton
+bool valorAnterior = 0;
 
 void setup() {
-  // Configuración del arduino
+  pinMode(azul, OUTPUT);
+  pinMode(amarillo, OUTPUT);
+  pinMode(verde, OUTPUT);
+  pinMode(rojo, OUTPUT);
+  pinMode(boton, INPUT);
+  //configurando funcionalidad de los pines
+  Serial.begin(9600);
+  //conectando input del boton a la consola
 }
 
 void loop() {
-  // Logica del programa
-
+  valorBoton = digitalRead(boton);
+  if(valorBoton && !valorAnterior) { //se apreto el boton y no estaba apretado antes
+    cuentaApretado++;
+  }
+    if(cuentaApretado == 4){
+    cuentaApretado = 0;
+  }
+  if(cuentaApretado == 0){ //prender led rojo
+    digitalWrite(rojo, 1);
+    digitalWrite(azul, 0);
+  }
+  else if(cuentaApretado == 1){ //led verde
+    digitalWrite(rojo, 0);
+    digitalWrite(verde, 1);
+  }
+  else if(cuentaApretado == 2){ //led amarillo
+    digitalWrite(verde, 0);
+    digitalWrite(amarillo, 1);
+  }
+  else if(cuentaApretado == 3){ //led rojo
+    digitalWrite(amarillo, 0);
+    digitalWrite(azul, 1);
+  }
+  valorAnterior = valorBoton;
+  delay(250);
 }
