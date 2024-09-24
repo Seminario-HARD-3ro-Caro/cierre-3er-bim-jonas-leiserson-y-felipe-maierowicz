@@ -64,7 +64,7 @@ void setup() {
 }
 
 void loop() {
-  int leyendoConsola = Serial.read();
+  int leyendoConsola = Serial.readString().toInt();
   if(leyendoConsola == 0){
     return;
   }
